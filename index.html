@@ -9,7 +9,6 @@
 </head>
 <body>
 
-
 <div id="topbar">Chat: <span id="chatName">---</span></div>
 
 <div id="login">
@@ -17,9 +16,14 @@
   <p>Entra o crea una chat</p>
   <input type="text" id="userName" placeholder="Inserisci il tuo nome" maxlength="20" />
   <input type="text" id="chatCodeInput" placeholder="Inserisci codice chat" maxlength="8" />
+  
+  <!-- Elemento mancante per i messaggi di info/errore -->
+  <div id="info" class="info-message"></div>
+  
   <button id="joinBtn">Entra in chat</button>
   <hr />
   <button id="createBtn">Crea chat vuota</button>
+
 <div class="info-section">
   <p class="info-text">GUARDA LA </p>
   <a href="Privacy Policy.pdf" class="info-link">Privacy Policy</a>
@@ -30,12 +34,12 @@
   <span class="creator-name">Matteo Abate</span>
   <a href="https://mattedev.netlify.app" class="info-link">Scopri di più</a>
 </div>
+
 <div class="info-section">
   <p class="info-text">Entra su </p>
   <a href="https://discord.gg/E5R2BymHYu" class="info-link">Discord</a>
 </div>
 </div>
-
 
 <div id="chat" style="display:none; flex-direction: column; height: 100%;">
   <div id="messages"></div>
@@ -48,7 +52,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="script.js"></script>
-  </body>
+<script src="script.js"></script>
+</body>
 </html>
-
