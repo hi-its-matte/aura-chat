@@ -2,73 +2,84 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <!-- Ottimizza viewport per mobile: larghezza dispositivo, no zoom utente -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <link rel="icon" type="image/png" href="icon.png" />
   <link rel="stylesheet" href="style.css" />
   <title>Aura Chat</title>
 </head>
 <body>
-  <div id="topbar" role="banner">Chat: <span id="chatName" aria-live="polite">---</span></div>
+  <div id="topbar" role="banner">
+    Chat: <span id="chatName" aria-live="polite">---</span>
+  </div>
 
-  <main id="login" role="main">
-    <h1>Aura Chat</h1>
-    <p>Entra o crea una chat</p>
+  <div class="main-container">
+    <main id="login" role="main">
+      <h1>Aura Chat</h1>
+      <p>Entra o crea una chat</p>
 
-    <label for="userName" class="sr-only">Nome utente</label>
-    <input
-      type="text"
-      id="userName"
-      name="userName"
-      placeholder="Inserisci il tuo nome"
-      maxlength="20"
-      autocomplete="off"
-      inputmode="text"
-      required
-    />
+      <div class="form-group">
+        <label for="userName" class="sr-only">Nome utente</label>
+        <input
+          type="text"
+          id="userName"
+          name="userName"
+          placeholder="Inserisci il tuo nome"
+          maxlength="20"
+          autocomplete="off"
+          inputmode="text"
+          required
+        />
+      </div>
 
-    <label for="chatCodeInput" class="sr-only">Codice chat</label>
-    <input
-      type="text"
-      id="chatCodeInput"
-      name="chatCodeInput"
-      placeholder="Inserisci codice chat"
-      maxlength="8"
-      autocomplete="off"
-      inputmode="text"
-    />
+      <div class="form-group">
+        <label for="chatCodeInput" class="sr-only">Codice chat</label>
+        <input
+          type="text"
+          id="chatCodeInput"
+          name="chatCodeInput"
+          placeholder="Inserisci codice chat"
+          maxlength="8"
+          autocomplete="off"
+          inputmode="text"
+        />
+      </div>
 
-    <div id="info" class="info-message" role="alert" aria-live="assertive"></div>
+      <div id="info" class="info-message" role="alert" aria-live="assertive"></div>
 
-    <button id="joinBtn" type="button">Entra in chat</button>
-    <hr />
-    <button id="createBtn" type="button">Crea chat vuota</button>
+      <button id="joinBtn" type="button">Entra in chat</button>
+      
+      <hr />
+      
+      <button id="createBtn" type="button">Crea chat vuota</button>
 
-    <section class="info-section" aria-label="Privacy e informazioni">
-      <p class="info-text">Guarda la <a href="Privacy Policy.pdf" class="info-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a></p>
-      <p class="info-text">
-        App creata dal <span class="creator-name">team di Aura</span> -
-        <a href="https://aurastudioitalia.it" class="info-link" target="_blank" rel="noopener noreferrer">Scopri di più</a>
-      </p>
+      <section class="info-section" aria-label="Privacy e informazioni">
+        <p class="info-text">
+          Guarda la <a href="Privacy Policy.pdf" class="info-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        </p>
+        <p class="info-text">
+          App creata dal <span class="creator-name">team di Aura</span> -
+          <a href="https://aurastudioitalia.it" class="info-link" target="_blank" rel="noopener noreferrer">Scopri di più</a>
+        </p>
+      </section>
+    </main>
+
+    <section id="chat" role="region" aria-label="Area chat">
+      <div id="messages" tabindex="0" aria-live="polite"></div>
+      <div id="inputRow">
+        <label for="messageInput" class="sr-only">Scrivi un messaggio</label>
+        <input
+          type="text"
+          id="messageInput"
+          name="messageInput"
+          placeholder="Scrivi un messaggio..."
+          maxlength="2000"
+          autocomplete="off"
+          inputmode="text"
+        />
+        <button id="sendBtn" type="button">Invia</button>
+      </div>
     </section>
-  </main>
-
-  <section id="chat" role="region" aria-label="Area chat" hidden>
-    <div id="messages" tabindex="0" aria-live="polite"></div>
-    <div id="inputRow">
-      <label for="messageInput" class="sr-only">Scrivi un messaggio</label>
-      <input
-        type="text"
-        id="messageInput"
-        name="messageInput"
-        placeholder="Scrivi un messaggio..."
-        maxlength="2000"
-        autocomplete="off"
-        inputmode="text"
-      />
-      <button id="sendBtn" type="button">Invia</button>
-    </div>
-  </section>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
