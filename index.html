@@ -1,57 +1,52 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/png" href="icon.png" />
-<title>Matte Chat</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="stylesheet" href="style.css">
+  <title>Aura Chat</title>
+
 </head>
 <body>
+  <div id="topbar">Chat: <span id="chatName">---</span></div>
 
-<div id="topbar">Chat: <span id="chatName">---</span></div>
+  <div id="login">
+    <h1>Aura Chat</h1>
+    <p>Entra o crea una chat</p>
+    <input type="text" id="userName" placeholder="Inserisci il tuo nome" maxlength="20" />
+    <input type="text" id="chatCodeInput" placeholder="Inserisci codice chat" maxlength="8" />
+    
+    <!-- Elemento mancante per i messaggi di info/errore -->
+    <div id="info" class="info-message"></div>
+    
+    <button id="joinBtn">Entra in chat</button>
+    <hr />
+    <button id="createBtn">Crea chat vuota</button>
 
-<div id="login">
-  <h1>Matte Chat</h1>
-  <p>Entra o crea una chat</p>
-  <input type="text" id="userName" placeholder="Inserisci il tuo nome" maxlength="20" />
-  <input type="text" id="chatCodeInput" placeholder="Inserisci codice chat" maxlength="8" />
-  
-  <!-- Elemento mancante per i messaggi di info/errore -->
-  <div id="info" class="info-message"></div>
-  
-  <button id="joinBtn">Entra in chat</button>
-  <hr />
-  <button id="createBtn">Crea chat vuota</button>
+    <div class="info-section">
+      <p class="info-text">Guarda la</p>
+      <a href="Privacy Policy.pdf" class="info-link">Privacy Policy</a>
+    </div>
 
-<div class="info-section">
-  <p class="info-text">GUARDA LA </p>
-  <a href="Privacy Policy.pdf" class="info-link">Privacy Policy</a>
-</div>
-
-<div class="info-section">
-  <p class="info-text">App creata da </p>
-  <span class="creator-name">Matteo Abate</span>
-  <a href="https://mattedev.netlify.app" class="info-link">Scopri di più</a>
-</div>
-
-<div class="info-section">
-  <p class="info-text">Entra su </p>
-  <a href="https://discord.gg/E5R2BymHYu" class="info-link">Discord</a>
-</div>
-</div>
-
-<div id="chat" style="display:none; flex-direction: column; height: 100%;">
-  <div id="messages"></div>
-  <div id="inputRow">
-    <input type="text" id="messageInput" placeholder="Scrivi un messaggio..." maxlength="200" />
-    <button id="sendBtn">Invia</button>
+    <div class="info-section">
+      <p class="info-text">App creata dal </p>
+      <span class="creator-name">team di Aura</span>
+      <a href="aurastudioitalia.it" class="info-link">Scopri di più</a>
+    </div>
   </div>
-</div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="script.js"></script>
+  <div id="chat" style="display:none; flex-direction: column; height: 100%;">
+    <div id="messages"></div>
+    <div id="inputRow">
+      <input type="text" id="messageInput" placeholder="Scrivi un messaggio..." maxlength="2000" />
+      <button id="sendBtn">Invia</button>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
