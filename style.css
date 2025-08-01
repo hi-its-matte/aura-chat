@@ -309,10 +309,12 @@ body {
   display: flex;
   gap: 10px;
   padding: 10px;
+  flex-wrap: nowrap; /* evita che si vadano a capo */
 }
 
 #inputRow input {
-  flex: 9; /* Molto più lungo */
+  flex-grow: 1;
+  min-width: 0; /* importante per evitare overflow */
   padding: 14px;
   border-radius: 12px;
   font-size: 1rem;
@@ -323,10 +325,10 @@ body {
 }
 
 #sendBtn {
-  flex: 1; /* Molto più corto */
-  padding: 8px;
+  flex-shrink: 0;
+  padding: 8px 14px;
   border-radius: 12px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
   background-color: #ff7aff;
   color: #ffffff;
@@ -335,6 +337,8 @@ body {
   white-space: nowrap;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s;
+  width: auto; /* larghezza automatica per contenuto */
+  min-width: 60px; /* evita troppo piccolo */
 }
 
 #sendBtn:hover {
@@ -343,30 +347,23 @@ body {
 
 
 
-    /* Responsive ottimizzato */
-    @media (max-width: 600px) {
-      #login {
-        margin: 20px;
-        padding: 20px;
-      }
-      #messages {
-        padding: 12px;
-      }
-      button, input {
-        font-size: 1rem;
-        padding: 12px 16px;
-      }
-      #topbar {
-        font-size: 0.9em;
-        padding: 8px 16px;
-      }
-      #login h1 {
-        font-size: 2rem;
-      }
-      #login p {
-        font-size: 1rem;
-      }
-    }
+    @media (max-width: 480px) {
+  #inputRow {
+    padding: 8px;
+  }
+  
+  #inputRow input {
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+
+  #sendBtn {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+    min-width: 50px;
+  }
+}
+
 
     /* Animazioni */
     @keyframes fadeIn {
