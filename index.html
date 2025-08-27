@@ -10,8 +10,8 @@
 <body>
     <!-- Topbar -->
     <div id="topbar">
-   
-        <span>Aura Chat - BETA1</span>
+        <i class="fas fa-star"></i>
+        <span>Aura Chat - BETA 2 DA TESTARE</span>
     </div>
 
     <!-- Login Screen -->
@@ -39,7 +39,7 @@
     <div id="registerScreen" class="main-container hidden">
         <div class="container-card">
             <div id="register" class="card">
-                <h1>Registrati su Aura Chat</h1>
+                <h1>✨ Registrati su Aura Chat</h1>
                 <p class="lead">Unisciti alla community più sicura</p>
                 <form id="registerForm">
                     <div class="form-group">
@@ -49,7 +49,7 @@
                         <input type="password" id="registerPassword" required minlength="6" placeholder="Crea una password sicura (min 6 caratteri)">
                     </div>
                     <div class="form-group">
-                        <input type="text" id="username" required placeholder="Username unico (es: @tuonome)" pattern="^@[a-zA-Z0-9_]{3,20}$">
+                        <input type="text" id="username" required placeholder="Username unico (es: @matteo_dev)" pattern="^@[a-zA-Z0-9_]{3,20}$">
                     </div>
                     <button type="submit">Registrati</button>
                     <button type="button" class="btn-ghost" onclick="showLogin()">Hai già un account? Accedi</button>
@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <!-- Profile Setup Screen (dopo registrazione) -->
+    <!-- Profile Setup Screen -->
     <div id="profileSetupScreen" class="main-container hidden">
         <div class="container-card">
             <div id="profileSetup" class="card">
@@ -141,7 +141,8 @@
                         </div>
                     </div>
                     <div class="chat-header-actions">
-                        <button class="header-btn"><i class="fas fa-search"></i></button>
+                        <button class="header-btn" onclick="showChatInfo()"><i class="fas fa-info-circle" title="Informazioni chat"></i></button>
+                        <button class="header-btn" id="addMemberBtn" onclick="showAddMemberModal()" style="display: none;"><i class="fas fa-user-plus" title="Aggiungi membro"></i></button>
                         <button class="header-btn"><i class="fas fa-ellipsis-v"></i></button>
                     </div>
                 </div>
@@ -179,16 +180,139 @@
                         <option value="personal">Chat Personale (Note)</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="chatNameGroup">
                     <input type="text" id="chatNameInput" required placeholder="Nome della chat">
                 </div>
                 <div class="form-group" id="recipientGroup" style="display: none;">
-                    <input type="text" id="recipientUsername" placeholder="Username destinatario (es: @matteo_dev)">
-                    <small class="small">Cerca utenti tramite username unico</small>
+                    <input type="text" id="recipientUsername" placeholder="Cerca utente per username..." autocomplete="off">
+                    <small class="small">Cerca utenti tramite username unico (@username)</small>
+                    <div id="userSearchResults" class="user-search-results">
+                        <!-- Search results will be displayed here -->
+                    </div>
+                </div>
+                <div class="form-group" id="groupMembersSection" style="display: none;">
+                    <label>Membri del gruppo</label>
+                    <input type="text" id="groupMembersSearch" placeholder="Cerca e aggiungi membri..." autocomplete="off">
+                    <div id="groupMembersSearchResults" class="user-search-results">
+                        <!-- Search results will be displayed here -->
+                    </div>
+                    <div id="selectedMembers" class="selected-members">
+                        <!-- Selected members will be displayed here -->
+                    </div>
                 </div>
                 <button type="submit">Crea Chat</button>
                 <div id="chatMessage" class="info-message hidden"></div>
             </form>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div id="addMemberModal" class="modal-overlay hidden" onclick="hideAddMemberModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Aggiungi Membri</h2>
+                <button class="close-btn" onclick="hideAddMemberModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <input type="text" id="addMemberSearch" placeholder="Cerca utente per username..." autocomplete="off">
+                <small class="small">Digita username per cercare utenti da aggiungere</small>
+            </div>
+            <div id="addMemberSearchResults" class="user-search-results">
+                <!-- Search results will be displayed here -->
+            </div>
+            <div id="addMemberMessage" class="info-message hidden"></div>
+        </div>
+    </div>
+
+    <!-- Chat Info Modal -->
+    <div id="chatInfoModal" class="modal-overlay hidden" onclick="hideChatInfo(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Informazioni Chat</h2>
+                <button class="close-btn" onclick="hideChatInfo()">&times;</button>
+            </div>
+            <div class="chat-info-content">
+                <div class="chat-info-header">
+                    <img id="chatInfoAvatar" class="chat-info-avatar" src="" alt="Chat Avatar">
+                    <div class="chat-info-details">
+                        <h3 id="chatInfoName"></h3>
+                        <p id="chatInfoType"></p>
+                    </div>
+                </div>
+                
+                <div id="groupInfoSection" class="group-info-section" style="display: none;">
+                    <div class="settings-section">
+                        <h4>Impostazioni Gruppo</h4>
+                        <div class="settings-item" onclick="showEditGroupModal()">
+                            <i class="fas fa-edit"></i>
+                            <div class="settings-item-content">
+                                <div class="settings-item-title">Modifica Info Gruppo</div>
+                                <div class="settings-item-desc">Cambia nome, foto e descrizione</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h4>Membri (<span id="membersCount">0</span>)</h4>
+                        <div id="membersList" class="members-list">
+                            <!-- Members will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="privateInfoSection" class="private-info-section" style="display: none;">
+                    <div class="settings-section">
+                        <h4>Informazioni Utente</h4>
+                        <div id="userInfoDetails">
+                            <!-- User details will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Group Modal -->
+    <div id="editGroupModal" class="modal-overlay hidden" onclick="hideEditGroupModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Modifica Gruppo</h2>
+                <button class="close-btn" onclick="hideEditGroupModal()">&times;</button>
+            </div>
+            <form id="editGroupForm">
+                <div class="form-group">
+                    <label>Nome Gruppo</label>
+                    <input type="text" id="editGroupName" required placeholder="Nome del gruppo">
+                </div>
+                <div class="form-group">
+                    <label>Descrizione Gruppo</label>
+                    <textarea id="editGroupDescription" placeholder="Descrizione del gruppo (opzionale)" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Foto Gruppo (URL)</label>
+                    <input type="url" id="editGroupPhoto" placeholder="URL immagine gruppo">
+                </div>
+                <button type="submit">Salva Modifiche</button>
+                <div id="editGroupMessage" class="info-message hidden"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Start Private Chat Modal -->
+    <div id="startPrivateChatModal" class="modal-overlay hidden" onclick="hideStartPrivateChatModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Inizia Chat Privata</h2>
+                <button class="close-btn" onclick="hideStartPrivateChatModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <input type="text" id="privateChatUserSearch" placeholder="Cerca utente per username..." autocomplete="off">
+                <small class="small">Digita username per iniziare una chat privata</small>
+            </div>
+            <div id="privateChatSearchResults" class="user-search-results">
+                <!-- Search results will be displayed here -->
+            </div>
+            <div id="privateChatMessage" class="info-message hidden"></div>
         </div>
     </div>
 
@@ -209,7 +333,6 @@
                         <div class="settings-item-desc">Modifica nome e foto profilo</div>
                     </div>
                 </div>
-            </div>
             
             <div class="settings-section">
                 <h3>Privacy & Sicurezza</h3>
@@ -241,12 +364,20 @@
                         <div class="settings-item-desc">Sincronizzato su tutti i dispositivi</div>
                     </div>
                 </div>
-                <div class="settings-item" onclick="showAbout()">
-                    <i class="fas fa-info-circle"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Altro da Aura</div>
-                        <div class="settings-item-desc">Informazioni e crediti</div>
-                    </div>
+
+     <div class="settings-item" onclick="showAbout()">
+    <img src="https://raw.githubusercontent.com/madebyanto/aura_assets/6a99191deb3b0348262d0e1673e06f64bdfd6b4a/altro_da_aura.svg?token=BBJ6GCAIXOSRIQRVUUX7Q63IVRV2A"
+         alt="Altro da Aura"
+         class="settings-item-icon"
+         style="width:24px; height:24px; object-fit:contain; margin-right:10px;">
+    <div class="settings-item-content">
+        <div class="settings-item-title">Altro da Aura</div>
+        <div class="settings-item-desc">Informazioni e crediti</div>
+    </div>
+</div>
+
+
+
                 </div>
                 <div class="settings-item" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
@@ -317,7 +448,7 @@
             </div>
             <div class="about-content">
                 <div class="about-icon">🌟</div>
-                <h3>Aura Chat v2.1</h3>
+                <h3>Aura Chat v2.2</h3>
                 <p>La chat app più sicura e moderna</p>
                 
                 <div class="features-list">
@@ -326,8 +457,10 @@
                         <li>🔒 Crittografia End-to-End</li>
                         <li>☁️ Sincronizzazione multi-dispositivo</li>
                         <li>📱 Design moderno e responsivo</li>
-                        <li>📎 Condivisione file multimediali</li>
-                        <li>👥 Chat di gruppo illimitate</li>
+                        <li>🔎 Condivisione file multimediali</li>
+                        <li>👥 Chat di gruppo avanzate</li>
+                        <li>👤 Chat private sicure</li>
+                        <li>⚙️ Gestione gruppi completa</li>
                         <li>🎨 Interface accattivante</li>
                     </ul>
                 </div>

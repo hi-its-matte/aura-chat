@@ -270,6 +270,24 @@
       margin-right: 6px;
     }
 
+
+.settings-item-icon {
+    width: 24px !important;   /* forza larghezza */
+    height: 24px !important;  /* forza altezza */
+    object-fit: contain;       /* mantiene proporzioni */
+}
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* spazio tra icona e testo */
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+
+
+
     /* input row */
     #inputRow {
       display: flex;
