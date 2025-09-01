@@ -271,20 +271,20 @@
     }
 
 
+
 .settings-item-icon {
-    width: 24px !important;   /* forza larghezza */
-    height: 24px !important;  /* forza altezza */
-    object-fit: contain;       /* mantiene proporzioni */
+  width: 24px !important;
+  height: 24px !important;
+  object-fit: contain;
 }
 
 .settings-item {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* spazio tra icona e testo */
-    padding: 8px 12px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px !important;
+  cursor: pointer;
 }
-
 
 
 

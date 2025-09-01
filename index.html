@@ -8,11 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Topbar -->
-    <div id="topbar">
-        <i class="fas fa-star"></i>
-        <span>Aura Chat - BETA 2 DA TESTARE</span>
-    </div>
+
 
     <!-- Login Screen -->
     <div id="loginScreen" class="main-container">
@@ -166,45 +162,48 @@
     </div>
 
     <!-- New Chat Modal -->
-    <div id="newChatModal" class="modal-overlay hidden" onclick="hideNewChatModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Nuova Chat</h2>
-                <button class="close-btn" onclick="hideNewChatModal()">&times;</button>
-            </div>
-            <form id="newChatForm">
-                <div class="form-group">
-                    <select id="chatType">
-                        <option value="private">Chat Privata</option>
-                        <option value="group">Chat di Gruppo</option>
-                        <option value="personal">Chat Personale (Note)</option>
-                    </select>
-                </div>
-                <div class="form-group" id="chatNameGroup">
-                    <input type="text" id="chatNameInput" required placeholder="Nome della chat">
-                </div>
-                <div class="form-group" id="recipientGroup" style="display: none;">
-                    <input type="text" id="recipientUsername" placeholder="Cerca utente per username..." autocomplete="off">
-                    <small class="small">Cerca utenti tramite username unico (@username)</small>
-                    <div id="userSearchResults" class="user-search-results">
-                        <!-- Search results will be displayed here -->
-                    </div>
-                </div>
-                <div class="form-group" id="groupMembersSection" style="display: none;">
-                    <label>Membri del gruppo</label>
-                    <input type="text" id="groupMembersSearch" placeholder="Cerca e aggiungi membri..." autocomplete="off">
-                    <div id="groupMembersSearchResults" class="user-search-results">
-                        <!-- Search results will be displayed here -->
-                    </div>
-                    <div id="selectedMembers" class="selected-members">
-                        <!-- Selected members will be displayed here -->
-                    </div>
-                </div>
-                <button type="submit">Crea Chat</button>
-                <div id="chatMessage" class="info-message hidden"></div>
-            </form>
+<div id="newChatModal" class="modal-overlay hidden" onclick="hideNewChatModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h2>Nuova Chat</h2>
+            <button class="close-btn" onclick="hideNewChatModal()">&times;</button>
         </div>
+        <form id="newChatForm">
+            <!-- Tipo di chat -->
+            <div class="form-group">
+                <select id="chatType">
+                    <option value="group">Chat di Gruppo / Privata </option>
+                    <option value="personal">Chat Personale (Note)</option>
+                </select>
+            </div>
+
+            <!-- Nome chat SEMPRE visibile -->
+            <div class="form-group" id="chatNameGroup">
+                <input type="text" id="chatNameInput" required placeholder="Nome della chat">
+            </div>
+
+            <!-- Campo per chat privata -->
+            <div class="form-group" id="recipientGroup" style="display: none;">
+                <input type="text" id="recipientUsername" placeholder="Cerca utente per username..." autocomplete="off">
+                <small class="small">Cerca utenti tramite username unico (@username)</small>
+                <div id="userSearchResults" class="user-search-results"></div>
+            </div>
+
+            <!-- Campo per chat di gruppo -->
+            <div class="form-group" id="groupMembersSection" style="display: none;">
+                <label>Membri del gruppo</label>
+                <input type="text" id="groupMembersSearch" placeholder="Cerca e aggiungi membri..." autocomplete="off">
+                <div id="groupMembersSearchResults" class="user-search-results"></div>
+                <div id="selectedMembers" class="selected-members"></div>
+            </div>
+
+            <button type="submit">Crea Chat</button>
+            <div id="chatMessage" class="info-message hidden"></div>
+        </form>
     </div>
+</div>
+
+
 
     <!-- Add Member Modal -->
     <div id="addMemberModal" class="modal-overlay hidden" onclick="hideAddMemberModal(event)">
@@ -298,23 +297,6 @@
         </div>
     </div>
 
-    <!-- Start Private Chat Modal -->
-    <div id="startPrivateChatModal" class="modal-overlay hidden" onclick="hideStartPrivateChatModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Inizia Chat Privata</h2>
-                <button class="close-btn" onclick="hideStartPrivateChatModal()">&times;</button>
-            </div>
-            <div class="form-group">
-                <input type="text" id="privateChatUserSearch" placeholder="Cerca utente per username..." autocomplete="off">
-                <small class="small">Digita username per iniziare una chat privata</small>
-            </div>
-            <div id="privateChatSearchResults" class="user-search-results">
-                <!-- Search results will be displayed here -->
-            </div>
-            <div id="privateChatMessage" class="info-message hidden"></div>
-        </div>
-    </div>
 
     <!-- Settings Modal -->
     <div id="settingsModal" class="modal-overlay hidden" onclick="hideSettings(event)">
@@ -364,18 +346,16 @@
                         <div class="settings-item-desc">Sincronizzato su tutti i dispositivi</div>
                     </div>
                 </div>
-
-     <div class="settings-item" onclick="showAbout()">
-    <img src="https://raw.githubusercontent.com/madebyanto/aura_assets/6a99191deb3b0348262d0e1673e06f64bdfd6b4a/altro_da_aura.svg?token=BBJ6GCAIXOSRIQRVUUX7Q63IVRV2A"
-         alt="Altro da Aura"
-         class="settings-item-icon"
-         style="width:24px; height:24px; object-fit:contain; margin-right:10px;">
-    <div class="settings-item-content">
-        <div class="settings-item-title">Altro da Aura</div>
-        <div class="settings-item-desc">Informazioni e crediti</div>
-    </div>
-</div>
-
+        <a href="https://aurastudioitalia.it/idee" target="_blank" style="text-decoration:none; color:inherit;">
+            <div class="settings-item">
+            <img src="altro_da_aura_color.svg" alt="Altro da Aura" class="settings-item-icon" style="width:60px !important; height:60px !important; margin-right:25px; border-radius: 12px; padding: 5px; transform: scale(1.5); object-fit: contain;">
+            <div class="settings-item-content">
+            <div class="settings-item-title">Altro da Aura</div>
+            <div class="settings-item-desc">Informazioni e crediti</div>
+            <p>Versione: 2.3.1</p>
+            </div>
+         </div>
+        </a>
 
 
                 </div>

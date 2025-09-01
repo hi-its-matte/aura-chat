@@ -51,6 +51,7 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 // Global variables
+
 let currentUser = null;
 let currentChatId = null;
 let currentChatType = null;
@@ -61,6 +62,7 @@ let selectedMembers = [];
 let searchTimeout = null;
 
 // DOM elements
+const Versione = "2.3.1 Closed Beta by Aura";
 const loginScreen = document.getElementById("loginScreen");
 const registerScreen = document.getElementById("registerScreen");
 const profileSetupScreen = document.getElementById("profileSetupScreen");
@@ -411,7 +413,6 @@ async function loadChats() {
   }
 }
 
-// Create chat list item element (FIXED)
 async function createChatListItem(chatId, chatData) {
   const div = document.createElement('div');
   div.className = 'chat-item';
@@ -419,22 +420,6 @@ async function createChatListItem(chatId, chatData) {
 
   let displayName = chatData.name || 'Chat senza nome';
   let avatarUrl = chatData.photoURL || generateAvatarURL(displayName);
-
-  // For private chats, show other user's info
-  if (chatData.type === 'private' && chatData.participants?.length === 2) {
-    const otherUserId = chatData.participants.find(id => id !== currentUser.uid);
-    
-    try {
-      const otherUserDoc = await getDoc(doc(db, "users", otherUserId));
-      if (otherUserDoc.exists()) {
-        const otherUser = otherUserDoc.data();
-        displayName = otherUser.displayName || 'Utente';
-        avatarUrl = otherUser.photoURL || generateAvatarURL(displayName);
-      }
-    } catch (error) {
-      console.error('Error loading other user data:', error);
-    }
-  }
 
   div.innerHTML = `
     <div class="avatar-container">
@@ -453,7 +438,6 @@ async function createChatListItem(chatId, chatData) {
   return div;
 }
 
-// Open chat (FIXED)
 async function openChat(chatId, chatData) {
   currentChatId = chatId;
   currentChatType = chatData.type;
@@ -468,25 +452,8 @@ async function openChat(chatId, chatData) {
   noChatSelected.classList.add('hidden');
   chatArea.classList.remove('hidden');
 
-  // Update chat header
   let displayName = chatData.name || 'Chat';
   let avatarUrl = chatData.photoURL || generateAvatarURL(displayName);
-
-  // For private chats, show other user's info
-  if (chatData.type === 'private' && chatData.participants?.length === 2) {
-    const otherUserId = chatData.participants.find(id => id !== currentUser.uid);
-    
-    try {
-      const otherUserDoc = await getDoc(doc(db, "users", otherUserId));
-      if (otherUserDoc.exists()) {
-        const otherUser = otherUserDoc.data();
-        displayName = otherUser.displayName || 'Utente';
-        avatarUrl = otherUser.photoURL || generateAvatarURL(displayName);
-      }
-    } catch (error) {
-      console.error('Error loading other user data:', error);
-    }
-  }
 
   const chatNameEl = document.getElementById('chatName');
   const chatAvatarEl = document.getElementById('chatAvatar');
@@ -503,6 +470,7 @@ async function openChat(chatId, chatData) {
       addMemberBtn.style.display = 'none';
     }
   }
+ 
 
   loadMessages(chatId);
 }
@@ -771,20 +739,7 @@ window.showChatInfo = async () => {
   let displayName = currentChatData.name || 'Chat';
   let avatarUrl = currentChatData.photoURL || generateAvatarURL(displayName);
   
-  if (currentChatData.type === 'private') {
-    const otherUserId = currentChatData.participants.find(id => id !== currentUser.uid);
-    try {
-      const otherUserDoc = await getDoc(doc(db, "users", otherUserId));
-      if (otherUserDoc.exists()) {
-        const otherUser = otherUserDoc.data();
-        displayName = otherUser.displayName || displayName;
-        avatarUrl = otherUser.photoURL || generateAvatarURL(displayName);
-      }
-    } catch (error) {
-      console.error('Error loading other user data:', error);
-    }
-  }
-  
+
   if (chatInfoAvatar) chatInfoAvatar.src = avatarUrl;
   if (chatInfoName) chatInfoName.textContent = displayName;
   if (chatInfoType) {
@@ -975,13 +930,9 @@ function toggleChatTypeOptions(chatType) {
   const groupMembersSection = document.getElementById('groupMembersSection');
   const chatNameGroup = document.getElementById('chatNameGroup');
   
-  if (chatType === 'private') {
-    if (recipientGroup) recipientGroup.style.display = 'block';
-    if (groupMembersSection) groupMembersSection.style.display = 'none';
-    if (chatNameGroup) chatNameGroup.style.display = 'none';
-  } else if (chatType === 'group') {
+  if (chatType === 'group') {
     if (recipientGroup) recipientGroup.style.display = 'none';
-    if (groupMembersSection) groupMembersSection.style.display = 'block';
+    if (groupMembersSection) groupMembersSection.style.display = 'block'; // Mostra per i gruppi
     if (chatNameGroup) chatNameGroup.style.display = 'block';
   } else {
     if (recipientGroup) recipientGroup.style.display = 'none';
@@ -991,50 +942,51 @@ function toggleChatTypeOptions(chatType) {
 }
 
 // Search users function (FIXED)
-async function searchUsers(query, resultsContainer, onUserClick) {
-  if (!query || query.length < 2) {
-    if (resultsContainer) resultsContainer.innerHTML = '';
+// Funzione di ricerca utenti (RIPARATA)
+async function searchUsers(termineRicerca, containerRisultati, alClickUtente) {
+  if (!termineRicerca || termineRicerca.length < 2) {
+    if (containerRisultati) containerRisultati.innerHTML = '';
     return;
   }
   
   try {
-    // Search by username or display name
-    const usernameQuery = query.startsWith('@') ? query : `@${query}`;
+    // Ricerca per username o nome visualizzato
+    const usernameQuery = termineRicerca.startsWith('@') ? termineRicerca : `@${termineRicerca}`;
     
-    const usersQuery = query(
+    const queryUtenti = query(
       collection(db, "users"),
       where("username", ">=", usernameQuery),
       where("username", "<=", usernameQuery + '\uf8ff'),
       limit(10)
     );
     
-    const snapshot = await getDocs(usersQuery);
-    const users = [];
+    const snapshot = await getDocs(queryUtenti);
+    const utenti = [];
     
     snapshot.forEach((doc) => {
       if (doc.id !== currentUser.uid) {
-        users.push({ id: doc.id, ...doc.data() });
+        utenti.push({ id: doc.id, ...doc.data() });
       }
     });
     
-    // Also search by display name if no @ prefix
-    if (!query.startsWith('@') && users.length < 5) {
-      const nameQuery = query(
+    // Cerca anche per nome visualizzato se non c'è il prefisso @
+    if (!termineRicerca.startsWith('@') && utenti.length < 5) {
+      const queryNome = query(
         collection(db, "users"),
-        where("displayName", ">=", query),
-        where("displayName", "<=", query + '\uf8ff'),
+        where("displayName", ">=", termineRicerca),
+        where("displayName", "<=", termineRicerca + '\uf8ff'),
         limit(5)
       );
       
-      const nameSnapshot = await getDocs(nameQuery);
-      nameSnapshot.forEach((doc) => {
-        if (doc.id !== currentUser.uid && !users.find(u => u.id === doc.id)) {
-          users.push({ id: doc.id, ...doc.data() });
+      const snapshotNome = await getDocs(queryNome);
+      snapshotNome.forEach((doc) => {
+        if (doc.id !== currentUser.uid && !utenti.find(u => u.id === doc.id)) {
+          utenti.push({ id: doc.id, ...doc.data() });
         }
       });
     }
     
-    displaySearchResults(users, resultsContainer, onUserClick);
+    displaySearchResults(utenti, containerRisultati, alClickUtente);
   } catch (error) {
     console.error('Error searching users:', error);
   }
@@ -1171,7 +1123,6 @@ if (chatTypeSelect) {
   });
 }
 
-// New chat form handler (FIXED)
 const newChatForm = document.getElementById('newChatForm');
 if (newChatForm) {
   newChatForm.addEventListener('submit', async (e) => {
@@ -1179,15 +1130,8 @@ if (newChatForm) {
     
     const chatType = document.getElementById('chatType').value;
     const chatName = document.getElementById('chatNameInput').value.trim();
-    const recipientUsername = document.getElementById('recipientUsername').value.trim();
 
-    if (chatType === 'private') {
-      if (!recipientUsername) {
-        showMessage('chatMessage', 'Inserisci username destinatario', 'error');
-        return;
-      }
-      await createPrivateChat(recipientUsername);
-    } else if (chatType === 'group') {
+    if (chatType === 'group') {
       if (!chatName) {
         showMessage('chatMessage', 'Inserisci un nome per il gruppo', 'error');
         return;
@@ -1207,72 +1151,7 @@ if (newChatForm) {
   });
 }
 
-// Create private chat (FIXED)
-async function createPrivateChat(recipientUsername) {
-  try {
-    // Ensure username starts with @
-    const searchUsername = recipientUsername.startsWith('@') ? recipientUsername : `@${recipientUsername}`;
-    
-    const usernameQuery = query(
-      collection(db, "users"),
-      where("username", "==", searchUsername)
-    );
-    
-    const usersSnapshot = await getDocs(usernameQuery);
-    if (usersSnapshot.empty) {
-      showMessage('chatMessage', 'Utente non trovato! Controlla lo username.', 'error');
-      return;
-    }
 
-    const recipientDoc = usersSnapshot.docs[0];
-    const recipientData = recipientDoc.data();
-
-    // Check if chat already exists
-    const existingChatsQuery = query(
-      collection(db, "chats"),
-      where("participants", "array-contains", currentUser.uid)
-    );
-    
-    const existingChats = await getDocs(existingChatsQuery);
-    let existingChat = null;
-    
-    existingChats.forEach(doc => {
-      const chatData = doc.data();
-      if (chatData.type === 'private' && 
-          chatData.participants.includes(recipientDoc.id) && 
-          chatData.participants.length === 2) {
-        existingChat = { id: doc.id, ...chatData };
-      }
-    });
-
-    if (existingChat) {
-      window.hideNewChatModal();
-      openChat(existingChat.id, existingChat);
-      return;
-    }
-
-    const chatData = {
-      type: 'private',
-      createdBy: currentUser.uid,
-      createdAt: serverTimestamp(),
-      lastMessage: '',
-      lastMessageTime: serverTimestamp(),
-      participants: [currentUser.uid, recipientDoc.id]
-    };
-
-    const docRef = await addDoc(collection(db, "chats"), chatData);
-    window.hideNewChatModal();
-    newChatForm.reset();
-    
-    setTimeout(() => {
-      openChatById(docRef.id);
-    }, 500);
-    
-  } catch (error) {
-    console.error('Error creating private chat:', error);
-    showMessage('chatMessage', 'Errore durante la creazione della chat', 'error');
-  }
-}
 
 // Create group chat
 async function createGroupChat(chatName) {
@@ -2004,16 +1883,4 @@ function checkPWASupport() {
 // Initialize PWA check
 checkPWASupport();
 
-console.log('🌟 Aura Chat v2.3 inizializzato!');
-console.log('🔒 Crittografia End-to-End attiva');
-console.log('☁️ Sincronizzazione multi-dispositivo pronta'); 
-console.log('👥 Sistema avanzato di gestione gruppi attivo');
-console.log('💬 Chat private e ricerca utenti disponibili');
-console.log('⚙️ Gestione completa gruppi implementata');
-console.log('🚀 Funzionalità avanzate caricate:');
-console.log('   - Ricerca chat in tempo reale');
-console.log('   - Drag & drop file supportato');
-console.log('   - Indicatori di connessione');
-console.log('   - Scorciatoie da tastiera');
-console.log('   - Supporto notifiche');
-console.log('   - Auto-scroll intelligente');
+console.log("Versione Aura Chat: " + Versione + "BETA CHIUSA") ;
