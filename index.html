@@ -1,511 +1,76 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Chat</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/jpeg" href="mlogo.jpg" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Matteo Abate - Developer</title>
 </head>
 <body>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <header id="home">
+    <h1>Matteo Abate</h1>
+    <p class="subtitle">Passionate developer and system builder</p>
+  </header>
+
+  <main class="home-main">
+    <section class="about">
+      <h2>About Me</h2>
+      <p>Hi! I'm Matteo, a developer passionate about OS development, CLI tools, and creating custom platforms. I love building innovative solutions and exploring the depths of system programming.</p>
+      <div class="languages">
+        <span>Python</span>
+        <span>C</span>
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>JavaScript</span>
+        <span>Bash</span>
+        <span>Assembly</span>
+        <span>Batch</span>
+      </div>
+    </section>
 
 
-    <!-- Login Screen -->
-    <div id="loginScreen" class="main-container">
-        <div class="container-card">
-            <div id="login" class="card">
-                <h1>Accedi ad Aura Chat</h1>
-                <p class="lead">La chat app più sicura con crittografia end-to-end</p>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <input type="email" id="loginEmail" required placeholder="La tua email">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" id="loginPassword" required placeholder="La tua password">
-                    </div>
-                    <button type="submit">Accedi</button>
-                    <button type="button" class="btn-ghost" onclick="showRegister()">Non hai un account? Registrati</button>
-                </form>
-                <div id="loginMessage" class="info-message hidden"></div>
-            </div>
-        </div>
-    </div>
+    <section class="cta-section">
+      <h2>Explore My Work</h2>
+      <p>Discover the projects I've built, from chat platforms to weather apps and mini utilities.</p>
+      <a href="projects.html" class="cta-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+        </svg>
+        View Projects
+      </a>
+    </section>
 
-    <!-- Register Screen -->
-    <div id="registerScreen" class="main-container hidden">
-        <div class="container-card">
-            <div id="register" class="card">
-                <h1>✨ Registrati su Aura Chat</h1>
-                <p class="lead">Unisciti alla community più sicura</p>
-                <form id="registerForm">
-                    <div class="form-group">
-                        <input type="email" id="registerEmail" required placeholder="La tua email">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" id="registerPassword" required minlength="6" placeholder="Crea una password sicura (min 6 caratteri)">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="username" required placeholder="Username unico (es: @matteo_dev)" pattern="^@[a-zA-Z0-9_]{3,20}$">
-                    </div>
-                    <button type="submit">Registrati</button>
-                    <button type="button" class="btn-ghost" onclick="showLogin()">Hai già un account? Accedi</button>
-                </form>
-                <div id="registerMessage" class="info-message hidden"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Setup Screen -->
-    <div id="profileSetupScreen" class="main-container hidden">
-        <div class="container-card">
-            <div id="profileSetup" class="card">
-                <h1>🎉 Benvenuto!</h1>
-                <p class="lead">Completa il tuo profilo per iniziare</p>
-                <div class="profile-preview">
-                    <img id="previewAvatar" class="preview-avatar" src="" alt="Avatar Preview">
-                    <div class="preview-info">
-                        <h3 id="previewName"></h3>
-                        <p id="previewUsername"></p>
-                    </div>
-                </div>
-                <form id="profileSetupForm">
-                    <div class="form-group">
-                        <input type="text" id="setupDisplayName" required placeholder="Il tuo nome visualizzato">
-                    </div>
-                    <div class="form-group">
-                        <input type="url" id="setupPhotoURL" placeholder="URL immagine profilo (opzionale)">
-                    </div>
-                    <button type="submit">Completa Profilo</button>
-                </form>
-                <div id="profileSetupMessage" class="info-message hidden"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Chat Screen -->
-    <div id="chatScreen" class="chat-container hidden">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="user-profile">
-                    <div class="avatar-container">
-                        <img id="userAvatar" class="user-avatar" src="" alt="Avatar">
-                        <div class="online-status"></div>
-                    </div>
-                    <div class="user-info">
-                        <h3 id="userName"></h3>
-                        <p id="userEmail"></p>
-                    </div>
-                </div>
-                <div class="sidebar-actions">
-                    <button class="new-chat-btn" onclick="showNewChatModal()">
-                        <i class="fas fa-plus"></i> Nuova Chat
-                    </button>
-                    <button class="settings-btn" onclick="showSettings()">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="chat-search">
-                <input type="text" id="chatSearch" placeholder="Cerca chat..." class="search-input">
-            </div>
-            
-            <div class="chat-list" id="chatList">
-                <!-- Chat items will be loaded here -->
-            </div>
-        </div>
-
-        <!-- Main Chat -->
-        <div class="main-chat">
-            <div id="noChatSelected" class="no-chat-selected">
-                <i class="fas fa-comments"></i>
-                <h3>Benvenuto in Aura Chat</h3>
-                <p>Seleziona una chat per iniziare a messaggiare o creane una nuova con crittografia end-to-end</p>
-            </div>
-            
-            <div id="chatArea" class="hidden">
-                <div class="chat-header">
-                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">
-                     ☰
-                    </button>
-                    <div class="avatar-container">
-                        <img id="chatAvatar" class="chat-avatar" src="" alt="Chat Avatar">
-                        <div class="online-status"></div>
-                    </div>
-                    <div class="chat-header-info">
-                        <div class="chat-header-name" id="chatName"></div>
-                        <div class="chat-header-status" id="chatStatus">
-                            <i class="fas fa-lock"></i> Crittografato end-to-end
-                        </div>
-                    </div>
-                    <div class="chat-header-actions">
-                        <button class="header-btn" onclick="showChatInfo()"><i class="fas fa-info-circle" title="Informazioni chat"></i></button>
-                        <button class="header-btn" id="addMemberBtn" onclick="showAddMemberModal()" style="display: none;"><i class="fas fa-user-plus" title="Aggiungi membro"></i></button>
-                        <button class="header-btn"><i class="fas fa-ellipsis-v"></i></button>
-                    </div>
-                </div>
-                
-                <div id="messages" class="messages-container">
-                    <!-- Messages will be loaded here -->
-                </div>
-                
-                <div id="inputRow" class="message-input-container">
-                    <button class="attachment-btn" onclick="showAttachmentOptions()">
-                        <i class="fas fa-paperclip"></i>
-                    </button>
-                    <input type="file" id="fileInput" multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt" style="display: none;">
-                    <textarea id="messageInput" class="message-input" placeholder="Scrivi un messaggio..." rows="1"></textarea>
-                    <button id="sendBtn" class="send-btn" onclick="sendMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- New Chat Modal -->
-<div id="newChatModal" class="modal-overlay hidden" onclick="hideNewChatModal(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-        <div class="modal-header">
-            <h2>Nuova Chat</h2>
-            <button class="close-btn" onclick="hideNewChatModal()">&times;</button>
-        </div>
-        <form id="newChatForm">
-            <!-- Tipo di chat -->
-            <div class="form-group">
-                <select id="chatType">
-                    <option value="group">Chat di Gruppo / Privata </option>
-                    <option value="personal">Chat Personale (Note)</option>
-                </select>
-            </div>
-
-            <!-- Nome chat SEMPRE visibile -->
-            <div class="form-group" id="chatNameGroup">
-                <input type="text" id="chatNameInput" required placeholder="Nome della chat">
-            </div>
-
-            <!-- Campo per chat privata -->
-            <div class="form-group" id="recipientGroup" style="display: none;">
-                <input type="text" id="recipientUsername" placeholder="Cerca utente per username..." autocomplete="off">
-                <small class="small">Cerca utenti tramite username unico (@username)</small>
-                <div id="userSearchResults" class="user-search-results"></div>
-            </div>
-
-            <!-- Campo per chat di gruppo -->
-            <div class="form-group" id="groupMembersSection" style="display: none;">
-                <label>Membri del gruppo</label>
-                <input type="text" id="groupMembersSearch" placeholder="Cerca e aggiungi membri..." autocomplete="off">
-                <div id="groupMembersSearchResults" class="user-search-results"></div>
-                <div id="selectedMembers" class="selected-members"></div>
-            </div>
-
-            <button type="submit">Crea Chat</button>
-            <div id="chatMessage" class="info-message hidden"></div>
-        </form>
-    </div>
-</div>
-
-
-
-    <!-- Add Member Modal -->
-    <div id="addMemberModal" class="modal-overlay hidden" onclick="hideAddMemberModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Aggiungi Membri</h2>
-                <button class="close-btn" onclick="hideAddMemberModal()">&times;</button>
-            </div>
-            <div class="form-group">
-                <input type="text" id="addMemberSearch" placeholder="Cerca utente per username..." autocomplete="off">
-                <small class="small">Digita username per cercare utenti da aggiungere</small>
-            </div>
-            <div id="addMemberSearchResults" class="user-search-results">
-                <!-- Search results will be displayed here -->
-            </div>
-            <div id="addMemberMessage" class="info-message hidden"></div>
-        </div>
-    </div>
-
-    <!-- Chat Info Modal -->
-    <div id="chatInfoModal" class="modal-overlay hidden" onclick="hideChatInfo(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Informazioni Chat</h2>
-                <button class="close-btn" onclick="hideChatInfo()">&times;</button>
-            </div>
-            <div class="chat-info-content">
-                <div class="chat-info-header">
-                    <img id="chatInfoAvatar" class="chat-info-avatar" src="" alt="Chat Avatar">
-                    <div class="chat-info-details">
-                        <h3 id="chatInfoName"></h3>
-                        <p id="chatInfoType"></p>
-                    </div>
-                </div>
-                
-                <div id="groupInfoSection" class="group-info-section" style="display: none;">
-                    <div class="settings-section">
-                        <h4>Impostazioni Gruppo</h4>
-                        <div class="settings-item" onclick="showEditGroupModal()">
-                            <i class="fas fa-edit"></i>
-                            <div class="settings-item-content">
-                                <div class="settings-item-title">Modifica Info Gruppo</div>
-                                <div class="settings-item-desc">Cambia nome, foto e descrizione</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-section">
-                        <h4>Membri (<span id="membersCount">0</span>)</h4>
-                        <div id="membersList" class="members-list">
-                            <!-- Members will be displayed here -->
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="privateInfoSection" class="private-info-section" style="display: none;">
-                    <div class="settings-section">
-                        <h4>Informazioni Utente</h4>
-                        <div id="userInfoDetails">
-                            <!-- User details will be displayed here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Group Modal -->
-    <div id="editGroupModal" class="modal-overlay hidden" onclick="hideEditGroupModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Modifica Gruppo</h2>
-                <button class="close-btn" onclick="hideEditGroupModal()">&times;</button>
-            </div>
-            <form id="editGroupForm">
-                <div class="form-group">
-                    <label>Nome Gruppo</label>
-                    <input type="text" id="editGroupName" required placeholder="Nome del gruppo">
-                </div>
-                <div class="form-group">
-                    <label>Descrizione Gruppo</label>
-                    <textarea id="editGroupDescription" placeholder="Descrizione del gruppo (opzionale)" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Foto Gruppo (URL)</label>
-                    <input type="url" id="editGroupPhoto" placeholder="URL immagine gruppo">
-                </div>
-                <button type="submit">Salva Modifiche</button>
-                <div id="editGroupMessage" class="info-message hidden"></div>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="modal-overlay hidden" onclick="hideSettings(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Impostazioni</h2>
-                <button class="close-btn" onclick="hideSettings()">&times;</button>
-            </div>
-            
-            <div class="settings-section">
-                <h3>Account</h3>
-                <div class="settings-item" onclick="showProfile()">
-                    <i class="fas fa-user"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Il mio profilo</div>
-                        <div class="settings-item-desc">Modifica nome e foto profilo</div>
-                    </div>
-                </div>
-            
-            <div class="settings-section">
-                <h3>Privacy & Sicurezza</h3>
-                <div class="settings-item">
-                    <i class="fas fa-shield-alt"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Crittografia End-to-End</div>
-                        <div class="settings-item-desc">I tuoi messaggi sono protetti</div>
-                    </div>
-                    <div class="encryption-badge">
-                        <i class="fas fa-lock"></i> Attiva
-                    </div>
-                </div>
-                <div class="settings-item" onclick="showPrivacyPolicy()">
-                    <i class="fas fa-file-contract"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Privacy Policy</div>
-                        <div class="settings-item-desc">Informativa sulla privacy</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="settings-section">
-                <h3>App</h3>
-                <div class="settings-item">
-                    <i class="fas fa-sync"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Sincronizzazione</div>
-                        <div class="settings-item-desc">Sincronizzato su tutti i dispositivi</div>
-                    </div>
-                </div>
-        <a href="https://aurastudioitalia.it/idee" target="_blank" style="text-decoration:none; color:inherit;">
-            <div class="settings-item">
-            <img src="altro_da_aura_color.svg" alt="Altro da Aura" class="settings-item-icon" style="width:60px !important; height:60px !important; margin-right:25px; border-radius: 12px; padding: 5px; transform: scale(1.5); object-fit: contain;">
-            <div class="settings-item-content">
-            <div class="settings-item-title">Altro da Aura</div>
-            <div class="settings-item-desc">Informazioni e crediti</div>
-          <p id="versionInfo">Versione: </p>
-            </div>
-         </div>
+    <section class="contact-section" id="contact">
+      <h2>Get In Touch</h2>
+      <p>Let's connect and collaborate on exciting projects!</p>
+      <div class="contact-links">
+        <a href="mailto:matte.abate@outlook.it" class="contact-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+          </svg>
+          Email Me
         </a>
+        <a href="https://github.com/hi-its-matte" target="_blank" class="contact-btn github">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </section>
+  </main>
 
-
-                </div>
-                <div class="settings-item" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Esci</div>
-                        <div class="settings-item-desc">Disconnetti dall'account</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Modal -->
-    <div id="profileModal" class="modal-overlay hidden" onclick="hideProfile(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Il Mio Profilo</h2>
-                <button class="close-btn" onclick="hideProfile()">&times;</button>
-            </div>
-            <form id="profileForm">
-                <div class="form-group">
-                    <input type="text" id="profileName" required placeholder="Nome utente">
-                </div>
-                <div class="form-group">
-                    <input type="url" id="profilePhoto" placeholder="URL immagine profilo">
-                </div>
-                <button type="submit">Salva Modifiche</button>
-                <div id="profileMessage" class="info-message hidden"></div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Privacy Policy Modal -->
-    <div id="privacyModal" class="modal-overlay hidden" onclick="hidePrivacyPolicy(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Privacy Policy</h2>
-                <button class="close-btn" onclick="hidePrivacyPolicy()">&times;</button>
-            </div>
-            <div class="privacy-content">
-                <h3>Informativa sulla Privacy - Aura Chat</h3>
-                <p><strong>Ultimo aggiornamento:</strong> Agosto 2025</p>
-                
-                <h4>1. Raccolta dei Dati</h4>
-                <p>Aura Chat raccoglie solo i dati necessari per fornire il servizio: indirizzo email, nome utente e immagine profilo opzionale.</p>
-                
-                <h4>2. Crittografia End-to-End</h4>
-                <p>Tutti i messaggi sono crittografati end-to-end. Solo tu e il destinatario potete leggerli. Nemmeno Aura Chat può accedervi.</p>
-                
-                <h4>3. Sincronizzazione</h4>
-                <p>I tuoi dati vengono sincronizzati in modo sicuro tra i tuoi dispositivi utilizzando protocolli crittografati.</p>
-                
-                <h4>4. Conservazione dei Dati</h4>
-                <p>I messaggi vengono conservati sui nostri server crittografati. Puoi eliminarli in qualsiasi momento.</p>
-                
-                <h4>5. Condivisione</h4>
-                <p>Non condividiamo mai i tuoi dati personali con terze parti per scopi commerciali.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- About Modal -->
-    <div id="aboutModal" class="modal-overlay hidden" onclick="hideAbout(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Altro da Aura</h2>
-                <button class="close-btn" onclick="hideAbout()">&times;</button>
-            </div>
-            <div class="about-content">
-                <div class="about-icon">🌟</div>
-                <h3>Aura Chat v2.2</h3>
-                <p>La chat app più sicura e moderna</p>
-                
-                <div class="features-list">
-                    <h4>Caratteristiche</h4>
-                    <ul>
-                        <li>🔒 Crittografia End-to-End</li>
-                        <li>☁️ Sincronizzazione multi-dispositivo</li>
-                        <li>📱 Design moderno e responsivo</li>
-                        <li>🔎 Condivisione file multimediali</li>
-                        <li>👥 Chat di gruppo avanzate</li>
-                        <li>👤 Chat private sicure</li>
-                        <li>⚙️ Gestione gruppi completa</li>
-                        <li>🎨 Interface accattivante</li>
-                    </ul>
-                </div>
-                
-                <div class="credits">
-                    <h4>Sviluppato con ❤️</h4>
-                    <p>Creato per una comunicazione sicura</p>
-                </div>
-                
-                <div class="copyright">
-                    <p>© 2025 Aura Chat. Tutti i diritti riservati.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Attachment Options Modal -->
-    <div id="attachmentModal" class="modal-overlay hidden" onclick="hideAttachmentModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2>Allega File</h2>
-                <button class="close-btn" onclick="hideAttachmentModal()">&times;</button>
-            </div>
-            <div class="settings-section">
-                <div class="settings-item" onclick="selectFileType('image/*')">
-                    <i class="fas fa-image"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Foto</div>
-                        <div class="settings-item-desc">Condividi immagini</div>
-                    </div>
-                </div>
-                <div class="settings-item" onclick="selectFileType('video/*')">
-                    <i class="fas fa-video"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Video</div>
-                        <div class="settings-item-desc">Condividi video</div>
-                    </div>
-                </div>
-                <div class="settings-item" onclick="selectFileType('audio/*')">
-                    <i class="fas fa-microphone"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Audio</div>
-                        <div class="settings-item-desc">Condividi file audio</div>
-                    </div>
-                </div>
-                <div class="settings-item" onclick="selectFileType('.pdf,.doc,.docx,.txt,.zip,.rar')">
-                    <i class="fas fa-file-alt"></i>
-                    <div class="settings-item-content">
-                        <div class="settings-item-title">Documenti</div>
-                        <div class="settings-item-desc">PDF, DOC, TXT e altri</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="loading-spinner"></div>
-        <p>Caricamento...</p>
-    </div>
-
-    <script src="script.js" type="module"></script>
+  <footer>
+    <p>© Matteo Abate • 2025</p>
+    <p>Building the future, one line of code at a time.</p>
+  </footer>
 </body>
 </html>
