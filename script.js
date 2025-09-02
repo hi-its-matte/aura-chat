@@ -61,6 +61,10 @@ let selectedMembers = [];
 let searchTimeout = null;
 
 // DOM elements
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("versionInfo").textContent = `versione: ${versione}`;
+});
+
 const loginScreen = document.getElementById("loginScreen");
 const registerScreen = document.getElementById("registerScreen");
 const profileSetupScreen = document.getElementById("profileSetupScreen");
@@ -68,11 +72,11 @@ const chatScreen = document.getElementById("chatScreen");
 const noChatSelected = document.getElementById("noChatSelected");
 const chatArea = document.getElementById("chatArea");
 const loadingOverlay = document.getElementById("loadingOverlay");
-// Versione
-const versione = "2.3.2"; 
+// versione
+let versione = "2.3.2"; 
 
 // Inserisci la versione nell'HTML
-document.getElementById("versionInfo").textContent = `Versione: ${versione}`;
+document.getElementById("versionInfo").textContent = `versione: ${versione}`;
 // Authentication State Observer
 onAuthStateChanged(auth, async (user) => {
   hideLoading();
@@ -1885,4 +1889,4 @@ function checkPWASupport() {
 // Initialize PWA check
 checkPWASupport();
 
-console.log("Versione Aura Chat: " + Versione ) ;
+console.log("versione Aura Chat: " + versione ) ;
