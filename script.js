@@ -51,7 +51,6 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 // Global variables
-
 let currentUser = null;
 let currentChatId = null;
 let currentChatType = null;
@@ -62,7 +61,6 @@ let selectedMembers = [];
 let searchTimeout = null;
 
 // DOM elements
-const Versione = "2.3.1 Closed Beta by Aura";
 const loginScreen = document.getElementById("loginScreen");
 const registerScreen = document.getElementById("registerScreen");
 const profileSetupScreen = document.getElementById("profileSetupScreen");
@@ -70,7 +68,11 @@ const chatScreen = document.getElementById("chatScreen");
 const noChatSelected = document.getElementById("noChatSelected");
 const chatArea = document.getElementById("chatArea");
 const loadingOverlay = document.getElementById("loadingOverlay");
+// Versione
+const versione = "2.3.2"; 
 
+// Inserisci la versione nell'HTML
+document.getElementById("versionInfo").textContent = `Versione: ${versione}`;
 // Authentication State Observer
 onAuthStateChanged(auth, async (user) => {
   hideLoading();
@@ -1883,4 +1885,4 @@ function checkPWASupport() {
 // Initialize PWA check
 checkPWASupport();
 
-console.log("Versione Aura Chat: " + Versione + "BETA CHIUSA") ;
+console.log("Versione Aura Chat: " + Versione ) ;
