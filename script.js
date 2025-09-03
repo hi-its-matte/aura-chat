@@ -65,6 +65,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("versionInfo").textContent = `versione: ${versione}`;
 });
 
+document.addEventListener('focusin', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        e.target.style.fontSize = '16px';
+    }
+});
+
 const loginScreen = document.getElementById("loginScreen");
 const registerScreen = document.getElementById("registerScreen");
 const profileSetupScreen = document.getElementById("profileSetupScreen");
@@ -423,7 +429,9 @@ async function createChatListItem(chatId, chatData) {
   const div = document.createElement('div');
   div.className = 'chat-item';
   div.onclick = () => openChat(chatId, chatData);
-
+  if (window.innerWidth <= 768) {
+    closeSidebar();
+  }
   let displayName = chatData.name || 'Chat senza nome';
   let avatarUrl = chatData.photoURL || generateAvatarURL(displayName);
 
@@ -613,6 +621,10 @@ if (messageInput) {
     this.style.height = 'auto';
     this.style.height = Math.min(this.scrollHeight, 120) + 'px';
   });
+  messageInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
 
   messageInput.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -829,6 +841,18 @@ function createMemberElement(memberId, userData) {
   `;
   
   return div;
+}
+
+function toggleSidebar() {
+    document.getElementById('chatSidebar').classList.toggle('mobile-open');
+    document.getElementById('sidebarOverlay').classList.toggle('hidden');
+    document.body.classList.toggle('sidebar-open');
+}
+
+function closeSidebar() {
+    document.getElementById('chatSidebar').classList.remove('mobile-open');
+    document.getElementById('sidebarOverlay').classList.add('hidden');
+    document.body.classList.remove('sidebar-open');
 }
 
 // Load private user info

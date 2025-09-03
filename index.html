@@ -2,7 +2,10 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#d20ae4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Aura Chat</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -17,10 +20,10 @@
                 <p class="lead">La chat app più sicura con crittografia end-to-end</p>
                 <form id="loginForm">
                     <div class="form-group">
-                        <input type="email" id="loginEmail" required placeholder="La tua email">
+                        <input type="email" id="loginEmail" required placeholder="La tua email" autocomplete="email">
                     </div>
                     <div class="form-group">
-                        <input type="password" id="loginPassword" required placeholder="La tua password">
+                        <input type="password" id="loginPassword" required placeholder="La tua password" autocomplete="current-password">
                     </div>
                     <button type="submit">Accedi</button>
                     <button type="button" class="btn-ghost" onclick="showRegister()">Non hai un account? Registrati</button>
@@ -38,13 +41,13 @@
                 <p class="lead">Unisciti alla community più sicura</p>
                 <form id="registerForm">
                     <div class="form-group">
-                        <input type="email" id="registerEmail" required placeholder="La tua email">
+                        <input type="email" id="registerEmail" required placeholder="La tua email" autocomplete="email">
                     </div>
                     <div class="form-group">
-                        <input type="password" id="registerPassword" required minlength="6" placeholder="Crea una password sicura (min 6 caratteri)">
+                        <input type="password" id="registerPassword" required minlength="6" placeholder="Crea una password sicura (min 6 caratteri)" autocomplete="new-password">
                     </div>
                     <div class="form-group">
-                        <input type="text" id="username" required placeholder="Username unico (es: @matteo_dev)" pattern="^@[a-zA-Z0-9_]{3,20}$">
+                        <input type="text" id="username" required placeholder="Username unico (es: @matteo_dev)" pattern="^@[a-zA-Z0-9_]{3,20}$" autocomplete="username">
                     </div>
                     <button type="submit">Registrati</button>
                     <button type="button" class="btn-ghost" onclick="showLogin()">Hai già un account? Accedi</button>
@@ -69,7 +72,7 @@
                 </div>
                 <form id="profileSetupForm">
                     <div class="form-group">
-                        <input type="text" id="setupDisplayName" required placeholder="Il tuo nome visualizzato">
+                        <input type="text" id="setupDisplayName" required placeholder="Il tuo nome visualizzato" autocomplete="name">
                     </div>
                     <div class="form-group">
                         <input type="url" id="setupPhotoURL" placeholder="URL immagine profilo (opzionale)">
@@ -85,7 +88,7 @@
     <div id="chatScreen" class="chat-container hidden">
 
         <!-- Sidebar -->
-        <div class="sidebar">
+        <div class="sidebar" id="chatSidebar">
             <div class="sidebar-header">
                 <div class="user-profile">
                     <div class="avatar-container">
@@ -99,7 +102,7 @@
                 </div>
                 <div class="sidebar-actions">
                     <button class="new-chat-btn" onclick="showNewChatModal()">
-                        <i class="fas fa-plus"></i> Nuova Chat
+                        <i class="fas fa-plus"></i> <span class="btn-text">Nuova Chat</span>
                     </button>
                     <button class="settings-btn" onclick="showSettings()">
                         <i class="fas fa-cog"></i>
@@ -126,8 +129,8 @@
 
             <div id="chatArea" class="hidden">
                 <div class="chat-header">
-                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">
-                        ☰
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
                     </button>
                     <div class="avatar-container">
                         <img id="chatAvatar" class="chat-avatar" src="" alt="Chat Avatar">
@@ -136,13 +139,13 @@
                     <div class="chat-header-info">
                         <div class="chat-header-name" id="chatName"></div>
                         <div class="chat-header-status" id="chatStatus">
-                            <i class="fas fa-lock"></i> Crittografato end-to-end
+                            <i class="fas fa-lock"></i> <span class="status-text">Crittografato end-to-end</span>
                         </div>
                     </div>
                     <div class="chat-header-actions">
                         <button class="header-btn" onclick="showChatInfo()"><i class="fas fa-info-circle" title="Informazioni chat"></i></button>
                         <button class="header-btn" id="addMemberBtn" onclick="showAddMemberModal()" style="display: none;"><i class="fas fa-user-plus" title="Aggiungi membro"></i></button>
-                        <button class="header-btn"><i class="fas fa-ellipsis-v"></i></button>
+                        <button class="header-btn mobile-hidden"><i class="fas fa-ellipsis-v"></i></button>
                     </div>
                 </div>
 
@@ -291,7 +294,6 @@
         </div>
     </div>
 
-
     <!-- Settings Modal -->
     <div id="settingsModal" class="modal-overlay hidden" onclick="hideSettings(event)">
         <div class="modal" onclick="event.stopPropagation()">
@@ -309,6 +311,7 @@
                         <div class="settings-item-desc">Modifica nome e foto profilo</div>
                     </div>
                 </div>
+            </div>
             
             <div class="settings-section">
                 <h3>Privacy & Sicurezza</h3>
@@ -340,19 +343,19 @@
                         <div class="settings-item-desc">Sincronizzato su tutti i dispositivi</div>
                     </div>
                 </div>
-        <a href="https://aurastudioitalia.it/idee" target="_blank" style="text-decoration:none; color:inherit;">
-            <div class="settings-item">
-            <img src="altro_da_aura_color.svg" alt="Altro da Aura" class="settings-item-icon" style="width:60px !important; height:60px !important; margin-right:25px; border-radius: 12px; padding: 5px; transform: scale(1.5); object-fit: contain;">
-            <div class="settings-item-content">
-            <div class="settings-item-title">Altro da Aura</div>
-            <div class="settings-item-desc">Informazioni e crediti</div>
-          <p id="versionInfo">Versione: </p>
+                <a href="https://aurastudioitalia.it/idee" target="_blank" style="text-decoration:none; color:inherit;">
+                    <div class="settings-item">
+                        <img src="altro_da_aura_color.svg" alt="Altro da Aura" class="settings-item-icon" style="width:60px !important; height:60px !important; margin-right:25px; border-radius: 12px; padding: 5px; transform: scale(1.5); object-fit: contain;">
+                        <div class="settings-item-content">
+                            <div class="settings-item-title">Altro da Aura</div>
+                            <div class="settings-item-desc">Informazioni e crediti</div>
+                            <p id="versionInfo">Versione: </p>
+                        </div>
+                    </div>
+                </a>
             </div>
-         </div>
-        </a>
-
-
-                </div>
+            
+            <div class="settings-section">
                 <div class="settings-item" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
                     <div class="settings-item-content">
@@ -497,8 +500,8 @@
         <p>Caricamento...</p>
     </div>
 
-    <script src="script.js" type="module"></script>
-
+    <!-- Mobile Overlay per chiudere la sidebar -->
+    <div id="sidebarOverlay" class="sidebar-overlay hidden" onclick="closeSidebar()"></div>
 
     <script src="script.js" type="module"></script>
 </body>
